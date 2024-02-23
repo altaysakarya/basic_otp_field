@@ -13,6 +13,7 @@ class BasicOTPInput extends StatefulWidget {
   final String? hintText;
   final bool showHintText;
   final MainAxisAlignment? mainAxisAlignment;
+  final ValueSetter<String>? onCompleted;
   const BasicOTPInput({
     Key? key,
     this.formKey,
@@ -26,6 +27,7 @@ class BasicOTPInput extends StatefulWidget {
     this.showHintText = true,
     this.hintText,
     this.mainAxisAlignment,
+    this.onCompleted,
   }) : super(key: key);
 
   @override
@@ -60,6 +62,10 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
     }
     if (value.isEmpty && index - 1 >= 0) {
       _focusNodes[index - 1].requestFocus();
+    }
+    if (index == widget.length - 1 && value.length == 1) {
+      String otpValue = _controllers.map((e) => e.text).join();
+      widget.onCompleted?.call(otpValue);
     }
   }
 
