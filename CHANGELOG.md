@@ -2,6 +2,10 @@
 
 * Create package
 
-## 0.0.2
+## 0.0.2
 
 * Add onCompleted
+
+## 0.0.3
+
+* Added expandable, hintStyle, generalBorder
