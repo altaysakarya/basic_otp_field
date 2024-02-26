@@ -4,13 +4,16 @@ import 'package:flutter/services.dart';
 class BasicOTPInput extends StatefulWidget {
   final GlobalKey<FormState>? formKey;
   final int length;
+  final bool expandable;
   final Size? inputSize;
   final EdgeInsets? inputPadding;
+  final InputBorder? generalBorder; //Change all borders
   final InputBorder? border;
   final InputBorder? focusedBorder;
   final InputBorder? enabledBorder;
   final InputBorder? errorBorder;
   final String? hintText;
+  final TextStyle? hintStyle;
   final bool showHintText;
   final MainAxisAlignment? mainAxisAlignment;
   final ValueSetter<String>? onCompleted;
@@ -18,14 +21,17 @@ class BasicOTPInput extends StatefulWidget {
     Key? key,
     this.formKey,
     this.length = 4,
+    this.expandable = false,
     this.inputSize,
     this.inputPadding,
+    this.generalBorder,
     this.border,
     this.errorBorder,
     this.enabledBorder,
     this.focusedBorder,
     this.showHintText = true,
     this.hintText,
+    this.hintStyle,
     this.mainAxisAlignment,
     this.onCompleted,
   }) : super(key: key);
@@ -80,32 +86,54 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
       child: Row(
         mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.center,
         children: List.generate(widget.length, (index) {
-          return Container(
-            width: widget.inputSize?.width ?? 70,
-            height: widget.inputSize?.height ?? 70,
-            padding: widget.inputPadding ?? const EdgeInsets.all(4),
-            child: TextFormField(
-              controller: _controllers[index],
-              focusNode: _focusNodes[index],
-              autofocus: index == 0,
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              validator: _validate,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(1),
-              ],
-              onChanged: (value) => _nextField(value: value, index: index),
-              decoration: InputDecoration(
-                hintText: widget.hintText ?? '0',
-                border: widget.border ?? OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-                enabledBorder: widget.enabledBorder ?? OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-                focusedBorder: widget.focusedBorder ?? OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-                errorBorder: widget.errorBorder ??
-                    OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: const BorderSide(color: Colors.red),
-                    ),
+          return Expanded(
+            flex: widget.expandable ? 1 : 0,
+            child: Container(
+              width: widget.inputSize?.width ?? 70,
+              height: widget.inputSize?.height ?? 70,
+              padding: widget.inputPadding ?? const EdgeInsets.all(4),
+              child: TextFormField(
+                controller: _controllers[index],
+                focusNode: _focusNodes[index],
+                autofocus: index == 0,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                validator: _validate,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(1),
+                ],
+                onChanged: (value) => _nextField(value: value, index: index),
+                decoration: InputDecoration(
+                  hintText: widget.hintText ?? '0',
+                  hintStyle: widget.hintStyle ?? const TextStyle(fontWeight: FontWeight.bold),
+                  border: widget.border ??
+                      OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
+                        ),
+                      ),
+                  enabledBorder: widget.enabledBorder ??
+                      OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
+                        ),
+                      ),
+                  focusedBorder: widget.focusedBorder ??
+                      OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
+                        ),
+                      ),
+                  errorBorder: widget.errorBorder ??
+                      OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(color: Colors.red),
+                      ),
+                ),
               ),
             ),
           );
