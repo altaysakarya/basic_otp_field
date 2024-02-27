@@ -9,3 +9,7 @@
 ## 0.0.3
 
 * Added expandable, hintStyle, generalBorder
+
+## 0.0.4
+
+* generalBorder problem fixed
