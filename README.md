@@ -18,32 +18,44 @@ To use the `BasicOTPInput` widget, simply include it in your widget tree and con
 ```dart
 BasicOTPInput(
   formKey: GlobalKey<FormState>(),
-  length: 6,
+  controller: BasicOTPInputController(length: 6),
+  expandable: true,
+  autofocus: true,
   inputSize: Size(50, 50),
-  inputPadding: EdgeInsets.all(8),
-  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
-  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-  errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+  inputInPadding: EdgeInsets.all(8),
+  inputOutPadding: EdgeInsets.all(4),
+  border: Border.all(color: Colors.grey),
+  focusedBorder: Border.all(color: Colors.blue),
+  borderRadius: BorderRadius.circular(8.0),
   hintText: '0',
   showHintText: true,
   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  onCompleted: (String value) {
+    // Handle completion
+  },
+  onChanged: (String value) {
+    // Handle change
+  },
 )
 ```
 
 ## Parameters
 
 * `formKey`: (Optional) Global key to control the form state outside the widget.
-* `length`: The length of the OTP (default is 4).
+* `controller`: An instance of BasicOTPInputController, required to manage the OTP input.
+* `expandable`: (Optional) If set to true, the input fields will expand to fill available space. Defaults to false.
+* `autofocus`: (Optional) Whether the OTP field should be focused automatically.
 * `inputSize`: (Optional) Size of each input field.
-* `inputPadding`: (Optional) Padding inside each input field.
+* `inputInPadding`: (Optional) Inner padding for the input field containers.
+* `inputOutPadding`: (Optional) Outer padding around the input field containers.
 * `border`: (Optional) Default border for the input fields.
 * `focusedBorder`: (Optional) Border of the input field when focused.
-* `enabledBorder`: (Optional) Border of the input field when enabled.
-* `errorBorder`: (Optional) Border of the input field when an error occurs.
+* `borderRadius`: (Optional) Border radius of the input fields.
 * `hintText`: (Optional) Text to display when the input field is empty.
-* `showHintText`: Whether to show the hint text.
-* `mainAxisAlignment`: (Optional) Alignment of the input fields in the row.
+* `showHintText`: Whether to show the hint text inside the input fields.
+* `mainAxisAlignment`: (Optional) Alignment of the input fields in their container.
+* `onCompleted`: (Optional) Callback when the user has entered the full OTP.
+* `onChanged`: (Optional) Callback for when the value of an input field changes.
 
 ## Customization
 

@@ -21,3 +21,7 @@
 ## 0.1.0
 
 * Complete architecture overhaul: The entire architecture of the application has been redesigned and rebuilt from the ground up.
+
+## 0.1.1
+
+* Readme.md edited
