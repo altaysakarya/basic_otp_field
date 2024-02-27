@@ -107,32 +107,37 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
                 decoration: InputDecoration(
                   hintText: widget.hintText ?? '0',
                   hintStyle: widget.hintStyle ?? const TextStyle(fontWeight: FontWeight.bold),
-                  border: widget.border ??
+                  border: widget.generalBorder ??
+                      widget.border ??
                       OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
                           color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
                         ),
                       ),
-                  enabledBorder: widget.enabledBorder ??
+                  enabledBorder: widget.generalBorder ??
+                      widget.enabledBorder ??
                       OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
                           color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
                         ),
                       ),
-                  focusedBorder: widget.focusedBorder ??
+                  focusedBorder: widget.generalBorder ??
+                      widget.focusedBorder ??
                       OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
                           color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
                         ),
                       ),
-                  errorBorder: widget.errorBorder ??
-                      OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: const BorderSide(color: Colors.red),
-                      ),
+                  errorBorder: widget.generalBorder != null
+                      ? widget.generalBorder?.copyWith(borderSide: widget.generalBorder?.borderSide.copyWith(color: Colors.red))
+                      : widget.errorBorder ??
+                          OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
                 ),
               ),
             ),
