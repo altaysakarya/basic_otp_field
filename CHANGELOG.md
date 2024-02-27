@@ -13,3 +13,7 @@
 ## 0.0.4
 
 * generalBorder problem fixed
+
+## 0.0.5
+
+* add textStyle

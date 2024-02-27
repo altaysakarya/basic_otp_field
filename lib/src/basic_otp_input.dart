@@ -14,6 +14,7 @@ class BasicOTPInput extends StatefulWidget {
   final InputBorder? errorBorder;
   final String? hintText;
   final TextStyle? hintStyle;
+  final TextStyle? textStyle;
   final bool showHintText;
   final MainAxisAlignment? mainAxisAlignment;
   final ValueSetter<String>? onCompleted;
@@ -32,6 +33,7 @@ class BasicOTPInput extends StatefulWidget {
     this.showHintText = true,
     this.hintText,
     this.hintStyle,
+    this.textStyle,
     this.mainAxisAlignment,
     this.onCompleted,
   }) : super(key: key);
@@ -98,6 +100,7 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
                 autofocus: index == 0,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.number,
+                style: widget.textStyle,
                 validator: _validate,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
