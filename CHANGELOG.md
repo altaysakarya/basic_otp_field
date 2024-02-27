@@ -17,3 +17,7 @@
 ## 0.0.5
 
 * add textStyle
+
+## 0.1.0
+
+* Complete architecture overhaul: The entire architecture of the application has been redesigned and rebuilt from the ground up.

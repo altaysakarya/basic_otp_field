@@ -1,41 +1,46 @@
+// ignore_for_file: dead_code
+
+import 'package:basic_otp_field/controllers/basic_otp_input_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class BasicOTPInput extends StatefulWidget {
   final GlobalKey<FormState>? formKey;
-  final int length;
+  final BasicOTPInputController controller;
   final bool expandable;
+  final bool autofocus;
   final Size? inputSize;
-  final EdgeInsets? inputPadding;
-  final InputBorder? generalBorder; //Change all borders
-  final InputBorder? border;
-  final InputBorder? focusedBorder;
-  final InputBorder? enabledBorder;
-  final InputBorder? errorBorder;
+  final EdgeInsets? inputInPadding;
+  final EdgeInsets? inputOutPadding;
+  final BoxBorder? border;
+  final BoxBorder? focusedBorder;
+  final BorderRadius? borderRadius;
   final String? hintText;
   final TextStyle? hintStyle;
   final TextStyle? textStyle;
   final bool showHintText;
   final MainAxisAlignment? mainAxisAlignment;
   final ValueSetter<String>? onCompleted;
+  final ValueSetter<String>? onChanged;
   const BasicOTPInput({
     Key? key,
     this.formKey,
-    this.length = 4,
+    required this.controller,
     this.expandable = false,
+    this.autofocus = true,
     this.inputSize,
-    this.inputPadding,
-    this.generalBorder,
+    this.inputInPadding,
+    this.inputOutPadding,
     this.border,
-    this.errorBorder,
-    this.enabledBorder,
     this.focusedBorder,
+    this.borderRadius,
     this.showHintText = true,
     this.hintText,
     this.hintStyle,
     this.textStyle,
     this.mainAxisAlignment,
     this.onCompleted,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -43,38 +48,10 @@ class BasicOTPInput extends StatefulWidget {
 }
 
 class _BasicOTPInputState extends State<BasicOTPInput> {
-  late List<FocusNode> _focusNodes;
-  late List<TextEditingController> _controllers;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNodes = List.generate(widget.length, (index) => FocusNode());
-    _controllers = List.generate(widget.length, (index) => TextEditingController());
-  }
-
   @override
   void dispose() {
-    for (var node in _focusNodes) {
-      node.dispose();
-    }
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
+    widget.controller.dispose();
     super.dispose();
-  }
-
-  void _nextField({required String value, required int index}) {
-    if (value.length == 1 && index + 1 < widget.length) {
-      _focusNodes[index + 1].requestFocus();
-    }
-    if (value.isEmpty && index - 1 >= 0) {
-      _focusNodes[index - 1].requestFocus();
-    }
-    if (index == widget.length - 1 && value.length == 1) {
-      String otpValue = _controllers.map((e) => e.text).join();
-      widget.onCompleted?.call(otpValue);
-    }
   }
 
   String? _validate(String? value) {
@@ -85,67 +62,79 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      child: Row(
-        mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.center,
-        children: List.generate(widget.length, (index) {
-          return Expanded(
-            flex: widget.expandable ? 1 : 0,
-            child: Container(
-              width: widget.inputSize?.width ?? 70,
-              height: widget.inputSize?.height ?? 70,
-              padding: widget.inputPadding ?? const EdgeInsets.all(4),
-              child: TextFormField(
-                controller: _controllers[index],
-                focusNode: _focusNodes[index],
-                autofocus: index == 0,
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                style: widget.textStyle,
-                validator: _validate,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(1),
-                ],
-                onChanged: (value) => _nextField(value: value, index: index),
-                decoration: InputDecoration(
-                  hintText: widget.hintText ?? '0',
-                  hintStyle: widget.hintStyle ?? const TextStyle(fontWeight: FontWeight.bold),
-                  border: widget.generalBorder ??
-                      widget.border ??
-                      OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
-                        ),
+      key: widget.formKey,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Opacity(
+            opacity: 0.0,
+            child: TextFormField(
+              controller: widget.controller.tec,
+              focusNode: widget.controller.focusNode,
+              textAlign: TextAlign.center,
+              autofocus: widget.autofocus,
+              keyboardType: TextInputType.number,
+              style: widget.textStyle,
+              validator: _validate,
+              maxLength: widget.controller.length,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                //LengthLimitingTextInputFormatter(1),
+              ],
+              onChanged: (value) {
+                if (widget.onChanged != null) widget.onChanged!(value);
+                if (widget.onCompleted != null && value.length == widget.controller.length) widget.onCompleted!(value);
+              },
+              //onChanged: (value) => _nextField(value: value, index: index),
+            ),
+          ),
+          InkWell(
+            focusColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () {
+              if (!widget.controller.focusNode.hasFocus) {
+                widget.controller.focusNode.requestFocus();
+              }
+            },
+            child: Row(
+              mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.center,
+              children: List.generate(
+                widget.controller.length,
+                (index) => Expanded(
+                  flex: widget.expandable ? 1 : 0,
+                  child: Padding(
+                    padding: widget.inputOutPadding ?? const EdgeInsets.all(4.0),
+                    child: Container(
+                      width: widget.inputSize?.width ?? 70,
+                      height: widget.inputSize?.height ?? 70,
+                      decoration: BoxDecoration(
+                        borderRadius: widget.borderRadius ?? BorderRadius.circular(12.0),
+                        border: widget.focusedBorder != null && index == widget.controller.tec.text.length
+                            ? widget.focusedBorder
+                            : widget.border ?? Border.all(color: Colors.black.withOpacity(.5)),
                       ),
-                  enabledBorder: widget.generalBorder ??
-                      widget.enabledBorder ??
-                      OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
-                        ),
-                      ),
-                  focusedBorder: widget.generalBorder ??
-                      widget.focusedBorder ??
-                      OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(.3),
-                        ),
-                      ),
-                  errorBorder: widget.generalBorder != null
-                      ? widget.generalBorder?.copyWith(borderSide: widget.generalBorder?.borderSide.copyWith(color: Colors.red))
-                      : widget.errorBorder ??
-                          OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: const BorderSide(color: Colors.red),
+                      child: Padding(
+                        padding: widget.inputInPadding ?? const EdgeInsets.all(4.0),
+                        child: Center(
+                          child: Text(
+                            widget.controller.otp.length > index
+                                ? widget.controller.otp[index]
+                                : widget.showHintText
+                                    ? widget.hintText ?? '0'
+                                    : '',
+                            style: widget.controller.otp.length > index ? widget.textStyle : widget.hintStyle,
                           ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
-          );
-        }),
+          ),
+        ],
       ),
     );
   }
