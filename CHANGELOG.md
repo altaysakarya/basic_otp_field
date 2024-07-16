@@ -29,3 +29,7 @@
 ## 0.1.2
 
 * Add backgroundColor property
+
+## 0.1.3
+
+* Add focusedBackgroundColor property

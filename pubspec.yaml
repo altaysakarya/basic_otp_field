@@ -1,6 +1,6 @@
 name: basic_otp_field
 description: "The `BasicOTPInput` widget is a customizable One Time Password (OTP) input widget for Flutter applications."
-version: 0.1.2
+version: 0.1.3
 homepage:
 
 environment:

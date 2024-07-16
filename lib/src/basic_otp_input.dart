@@ -23,6 +23,7 @@ class BasicOTPInput extends StatefulWidget {
   final ValueSetter<String>? onCompleted;
   final ValueSetter<String>? onChanged;
   final Color? backgroundColor;
+  final Color? focusedBackgroundColor;
   const BasicOTPInput({
     Key? key,
     this.formKey,
@@ -43,6 +44,7 @@ class BasicOTPInput extends StatefulWidget {
     this.onCompleted,
     this.onChanged,
     this.backgroundColor,
+    this.focusedBackgroundColor,
   }) : super(key: key);
 
   @override
@@ -113,7 +115,11 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
                       height: widget.inputSize?.height ?? 70,
                       decoration: BoxDecoration(
                         borderRadius: widget.borderRadius ?? BorderRadius.circular(12.0),
-                        color: widget.backgroundColor,
+                        color: widget.focusedBackgroundColor != null
+                            ? index == widget.controller.tec.text.length
+                                ? widget.focusedBackgroundColor
+                                : widget.backgroundColor
+                            : widget.backgroundColor,
                         border: widget.focusedBorder != null && index == widget.controller.tec.text.length
                             ? widget.focusedBorder
                             : widget.border ?? Border.all(color: Colors.black.withOpacity(.5)),
