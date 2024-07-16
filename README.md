@@ -51,6 +51,7 @@ BasicOTPInput(
 * `border`: (Optional) Default border for the input fields.
 * `focusedBorder`: (Optional) Border of the input field when focused.
 * `borderRadius`: (Optional) Border radius of the input fields.
+* `backgroundColor`: (Optional) Change background color.
 * `hintText`: (Optional) Text to display when the input field is empty.
 * `showHintText`: Whether to show the hint text inside the input fields.
 * `mainAxisAlignment`: (Optional) Alignment of the input fields in their container.

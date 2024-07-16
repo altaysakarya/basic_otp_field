@@ -25,3 +25,7 @@
 ## 0.1.1
 
 * Readme.md edited
+
+## 0.1.2
+
+* Add backgroundColor property
