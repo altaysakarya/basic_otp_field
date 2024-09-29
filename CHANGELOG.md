@@ -33,3 +33,7 @@
 ## 0.1.3
 
 * Add focusedBackgroundColor property
+
+## 0.1.4
+
+* Keyboard bug fixed

@@ -53,7 +53,22 @@ class BasicOTPInput extends StatefulWidget {
 
 class _BasicOTPInputState extends State<BasicOTPInput> {
   @override
+  void initState() {
+    super.initState();
+    widget.controller.focusNode.addListener(_focusListener);
+  }
+
+  void _focusListener() {
+    if (!widget.controller.focusNode.hasFocus && mounted) {
+      setState(() {
+        widget.controller.focusNode.requestFocus();
+      });
+    }
+  }
+
+  @override
   void dispose() {
+    widget.controller.focusNode.removeListener(_focusListener);
     widget.controller.dispose();
     super.dispose();
   }
@@ -99,7 +114,7 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
             highlightColor: Colors.transparent,
             onTap: () {
               if (!widget.controller.focusNode.hasFocus) {
-                widget.controller.focusNode.requestFocus();
+                widget.controller.focusNode.requestFocus(widget.controller.focusNode);
               }
             },
             child: Row(
