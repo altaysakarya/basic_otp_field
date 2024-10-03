@@ -114,7 +114,12 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
             highlightColor: Colors.transparent,
             onTap: () {
               if (!widget.controller.focusNode.hasFocus) {
-                widget.controller.focusNode.requestFocus(widget.controller.focusNode);
+                widget.controller.focusNode.requestFocus();
+              } else {
+                widget.controller.focusNode.unfocus();
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  widget.controller.focusNode.requestFocus();
+                });
               }
             },
             child: Row(

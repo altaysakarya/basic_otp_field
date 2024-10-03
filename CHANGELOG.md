@@ -37,3 +37,7 @@
 ## 0.1.4
 
 * Keyboard bug fixed
+
+## 0.1.5
+
+* Bug fixed
