@@ -21,6 +21,7 @@ class BasicOTPInputController {
   }
 
   void dispose() {
-    tec.dispose();
+    _tec.dispose();
+    _focusNode.dispose();
   }
 }

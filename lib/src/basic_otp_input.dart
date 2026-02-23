@@ -69,7 +69,6 @@ class _BasicOTPInputState extends State<BasicOTPInput> {
   @override
   void dispose() {
     widget.controller.focusNode.removeListener(_focusListener);
-    widget.controller.dispose();
     super.dispose();
   }
 

@@ -41,3 +41,7 @@
 ## 0.1.5
 
 * Bug fixed
+
+## 0.1.6
+
+* Dispose bug fixed
